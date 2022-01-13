@@ -5,7 +5,7 @@ const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
 
 let mode = "development";
-let target = "web";
+let target = ["web", "es5"];
 
 if (process.env.NODE_ENV === "production") {
   (mode = "production"), (target = "browserlist");
@@ -58,7 +58,7 @@ module.exports = {
   target: target,
   devtool: "source-map",
   resolve: {
-    extensions: [".js", "jsx"],
+    extensions: ["*", ".js", ".jsx"],
   },
   devServer: {
     static: {
@@ -68,5 +68,6 @@ module.exports = {
     port: 3000,
     hot: true,
     open: true,
+    historyApiFallback: true,
   },
 };

@@ -1,8 +1,16 @@
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Counter } from "./counter";
+
 const App = () => {
   return (
-    <div>
-      <h1 className='text-3xl'>Hello World</h1>
-    </div>
+    <BrowserRouter>
+      <div>
+        <Routes>
+          <Route path='/' element={"Hello"}></Route>
+          <Route path='/counter' element={<Counter />} />
+        </Routes>
+      </div>
+    </BrowserRouter>
   );
 };
 
