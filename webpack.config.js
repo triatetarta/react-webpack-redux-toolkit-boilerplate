@@ -3,25 +3,32 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const Dotenv = require("dotenv-webpack");
+const TerserPlugin = require("terser-webpack-plugin");
 
-let mode = "development";
-let target = ["web", "es5"];
+// let mode = "development";
+// let target = ["web", "es5"];
 
-if (process.env.NODE_ENV === "production") {
-  (mode = "production"), (target = "browserlist");
-}
+// if (process.env.NODE_ENV === "production") {
+//   (mode = "production"), (target = "browserlist");
+// }
+
+const isDevelopment = process.env.NODE_ENV !== "production";
 
 module.exports = {
-  mode: mode,
+  mode: isDevelopment ? "development" : "production",
   entry: "./src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     assetModuleFilename: "images/[hash][ext][query]",
   },
+  optimization: {
+    minimize: !isDevelopment,
+    minimizer: [new TerserPlugin()],
+  },
   module: {
     rules: [
       {
-        test: /\.(png|jpe?g|gif|svg)$/i,
+        test: /\.(png|jpe?g|gif|svg|webp)$/i,
         type: "asset",
       },
       {
@@ -55,10 +62,10 @@ module.exports = {
       template: "./public/index.html",
     }),
   ],
-  target: target,
+  target: "web",
   devtool: "source-map",
   resolve: {
-    extensions: ["*", ".js", ".jsx"],
+    extensions: ["*", ".js", ".jsx", ".json"],
   },
   devServer: {
     static: {
